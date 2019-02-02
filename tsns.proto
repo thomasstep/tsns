@@ -3,6 +3,7 @@ syntax = "proto3";
 message ToggleFollow {
   string Origin = 1;
   string Target = 2;
+  bool Following = 3;
 }
 
 message ListUser {
