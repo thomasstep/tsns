@@ -1,5 +1,11 @@
 syntax = "proto3";
 
+message Login {
+  string Username = 1;
+  string Password = 2;
+  bool LoggedIn = 3;
+}
+
 message ToggleFollow {
   string Origin = 1;
   string Target = 2;

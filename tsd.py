@@ -1,13 +1,57 @@
 import grpc
 from concurrent import futures
 import time
+import os
+import json
+import copy
 
 # Import grpc classes
 import tsns_pb2
 import tsns_pb2_grpc 
 
+userTemplate = {
+"username": "",
+"followers": [],
+"following": [],
+"posts": [],
+"timeline": []
+}
+
 # Class for the service
 class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
+	
+	def __init__(self):
+		# First load all of the current users information
+		self.currentUsers = {}
+		# Creating directory for storing user information if it does not already exist
+		if not os.path.isdir("./users"):
+			os.mkdir("./users/")
+		else:
+			dirs = os.listdir("./users/")
+			files = []
+			for f in dirs:
+				files.append(f)
+			for f in files:
+				nextUser = {}
+				with open("./users/" + f) as jsonFile:
+					nextUser = json.load(jsonFile)
+				self.currentUsers[nextUser["username"]] = copy.deepcopy(nextUser)
+			print(self.currentUsers)	
+
+	def Login(self, request, context):
+		username = request.Username
+		if username not in self.currentUsers:
+			print("Making user account.")
+			newUser = copy.deepcopy(userTemplate)
+			newUser["username"] = username
+			currentUsers[newUser["username"]] = copy.deepcopy(newUser)
+		else:
+			print(username + " logged in.")
+		response = tsns_pb2.Username()
+		response.Username = username
+		response.Password = request.Password
+		response.LoggedIn = True
+		return response
 
 	def Follow(self, request, context):
 		response = tsns_pb2.ToggleFollow()
