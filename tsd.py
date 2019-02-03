@@ -38,6 +38,15 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 				self.currentUsers[nextUser["username"]] = copy.deepcopy(nextUser)
 			print(self.currentUsers)	
 
+	def saveAll(self):
+		users = self.currentUsers.keys()
+		for user in users:
+			self.save(user)
+
+	def save(self, username):
+		with open(username + ".json", "w") as saveFile:
+			json.dump(self.currentUsers[username], saveFile)
+
 	def Login(self, request, context):
 		username = request.Username
 		if username not in self.currentUsers:
@@ -55,8 +64,12 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 
 	def Follow(self, request, context):
 		response = tsns_pb2.ToggleFollow()
-		response.Origin = request.Origin
-		response.Target = request.Target
+		username = request.Origin
+		target = request.Target
+		self.currentUsers[username].following.append(target)
+		self.save(username)
+		response.Origin = username
+		response.Target = target 
 		response.Following = True
 		return response
 
