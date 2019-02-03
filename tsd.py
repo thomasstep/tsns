@@ -35,7 +35,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 				nextUser = {}
 				with open("./users/" + f) as jsonFile:
 					nextUser = json.load(jsonFile)
-				self.currentUsers[nextUser["username"]] = copy.deepcopy(nextUser)
+					self.currentUsers[nextUser["username"]] = copy.deepcopy(nextUser)
 			print(self.currentUsers)	
 
 	def saveAll(self):
@@ -44,8 +44,10 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 			self.save(user)
 
 	def save(self, username):
-		with open(username + ".json", "w") as saveFile:
+		with open("./user/" + username + ".json", "w") as saveFile:
+			print("Saving..." + json.dumps(self.currentUsers[username]))
 			json.dump(self.currentUsers[username], saveFile)
+			saveFile.close()
 
 	def Login(self, request, context):
 		username = request.Username
@@ -53,10 +55,11 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 			print("Making user account.")
 			newUser = copy.deepcopy(userTemplate)
 			newUser["username"] = username
-			currentUsers[newUser["username"]] = copy.deepcopy(newUser)
+			self.currentUsers[newUser["username"]] = copy.deepcopy(newUser)
+			self.save(username)
 		else:
 			print(username + " logged in.")
-		response = tsns_pb2.Username()
+		response = tsns_pb2.Auth()
 		response.Username = username
 		response.Password = request.Password
 		response.LoggedIn = True
@@ -66,8 +69,9 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		response = tsns_pb2.ToggleFollow()
 		username = request.Origin
 		target = request.Target
-		self.currentUsers[username].following.append(target)
+		self.currentUsers[username]["following"].append(target)
 		self.save(username)
+		print(self.currentUsers)
 		response.Origin = username
 		response.Target = target 
 		response.Following = True
