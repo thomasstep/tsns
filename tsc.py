@@ -18,4 +18,4 @@ follow = tsns_pb2.ToggleFollow(Origin="thomas", Target="shawn", Following=False)
 response = stub.Follow(follow)
 
 # Checking
-print("Response: " + response.Origin + ", " + response.Target + ", " + reponse.Following)
+print("Response: " + response.Origin + ", " + response.Target + ", " + str(response.Following))

@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\ntsns.proto\"+\n\x05Login\x12\x10\n\x08Username\x18\x01 \x01(\t\x12\x10\n\x08Password\x18\x02 \x01(\t\"A\n\x0cToggleFollow\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0e\n\x06Target\x18\x02 \x01(\t\x12\x11\n\tFollowing\x18\x03 \x01(\x08\"\x1a\n\x08ListUser\x12\x0e\n\x06Origin\x18\x01 \x01(\t\"5\n\nReturnList\x12\x14\n\x0c\x43urrentUsers\x18\x01 \x01(\t\x12\x11\n\tFollowers\x18\x02 \x01(\t\"2\n\x04Post\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0c\n\x04Post\x18\x02 \x01(\t\x12\x0c\n\x04Time\x18\x03 \x01(\t2\xb2\x01\n\x18TinySocialNetworkService\x12(\n\x06\x46ollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12*\n\x08Unfollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12 \n\x04List\x12\t.ListUser\x1a\x0b.ReturnList\"\x00\x12\x1e\n\x08Timeline\x12\x05.Post\x1a\x05.Post\"\x00(\x01\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\ntsns.proto\"=\n\x05Login\x12\x10\n\x08Username\x18\x01 \x01(\t\x12\x10\n\x08Password\x18\x02 \x01(\t\x12\x10\n\x08LoggedIn\x18\x03 \x01(\x08\"A\n\x0cToggleFollow\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0e\n\x06Target\x18\x02 \x01(\t\x12\x11\n\tFollowing\x18\x03 \x01(\x08\"\x1a\n\x08ListUser\x12\x0e\n\x06Origin\x18\x01 \x01(\t\"5\n\nReturnList\x12\x14\n\x0c\x43urrentUsers\x18\x01 \x01(\t\x12\x11\n\tFollowers\x18\x02 \x01(\t\"2\n\x04Post\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0c\n\x04Post\x18\x02 \x01(\t\x12\x0c\n\x04Time\x18\x03 \x01(\t2\xb2\x01\n\x18TinySocialNetworkService\x12(\n\x06\x46ollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12*\n\x08Unfollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12 \n\x04List\x12\t.ListUser\x1a\x0b.ReturnList\"\x00\x12\x1e\n\x08Timeline\x12\x05.Post\x1a\x05.Post\"\x00(\x01\x30\x01\x62\x06proto3')
 )
 
 
@@ -46,6 +46,13 @@ _LOGIN = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='LoggedIn', full_name='Login.LoggedIn', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -59,7 +66,7 @@ _LOGIN = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=14,
-  serialized_end=57,
+  serialized_end=75,
 )
 
 
@@ -103,8 +110,8 @@ _TOGGLEFOLLOW = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=59,
-  serialized_end=124,
+  serialized_start=77,
+  serialized_end=142,
 )
 
 
@@ -134,8 +141,8 @@ _LISTUSER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=126,
-  serialized_end=152,
+  serialized_start=144,
+  serialized_end=170,
 )
 
 
@@ -172,8 +179,8 @@ _RETURNLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=154,
-  serialized_end=207,
+  serialized_start=172,
+  serialized_end=225,
 )
 
 
@@ -217,8 +224,8 @@ _POST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=209,
-  serialized_end=259,
+  serialized_start=227,
+  serialized_end=277,
 )
 
 DESCRIPTOR.message_types_by_name['Login'] = _LOGIN
@@ -271,8 +278,8 @@ _TINYSOCIALNETWORKSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=262,
-  serialized_end=440,
+  serialized_start=280,
+  serialized_end=458,
   methods=[
   _descriptor.MethodDescriptor(
     name='Follow',
