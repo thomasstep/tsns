@@ -28,6 +28,7 @@ message Post {
 }
 
 service TinySocialNetworkService {
+  rpc Login(Login) returns (Login) {}
   rpc Follow(ToggleFollow) returns (ToggleFollow) {}
   rpc Unfollow(ToggleFollow) returns (ToggleFollow) {}
   rpc List(ListUser) returns (ReturnList) {}
