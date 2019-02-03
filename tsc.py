@@ -12,7 +12,7 @@ channel = grpc.insecure_channel(sys.argv[1] + ":" + sys.argv[2])
 stub = tsns_pb2_grpc.TinySocialNetworkServiceStub(channel)
 
 # Logging in
-login = tsns_pb2.Login(Username="thomas", Password="me", LoggedIn=False)
+login = tsns_pb2.Auth(Username="thomas", Password="me", LoggedIn=False)
 stub.Login(login)
 
 # Creating a follow request
