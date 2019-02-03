@@ -14,6 +14,11 @@ class TinySocialNetworkServiceStub(object):
     Args:
       channel: A grpc.Channel.
     """
+    self.Login = channel.unary_unary(
+        '/TinySocialNetworkService/Login',
+        request_serializer=tsns__pb2.Auth.SerializeToString,
+        response_deserializer=tsns__pb2.Auth.FromString,
+        )
     self.Follow = channel.unary_unary(
         '/TinySocialNetworkService/Follow',
         request_serializer=tsns__pb2.ToggleFollow.SerializeToString,
@@ -39,6 +44,13 @@ class TinySocialNetworkServiceStub(object):
 class TinySocialNetworkServiceServicer(object):
   # missing associated documentation comment in .proto file
   pass
+
+  def Login(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
 
   def Follow(self, request, context):
     # missing associated documentation comment in .proto file
@@ -71,6 +83,11 @@ class TinySocialNetworkServiceServicer(object):
 
 def add_TinySocialNetworkServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
+      'Login': grpc.unary_unary_rpc_method_handler(
+          servicer.Login,
+          request_deserializer=tsns__pb2.Auth.FromString,
+          response_serializer=tsns__pb2.Auth.SerializeToString,
+      ),
       'Follow': grpc.unary_unary_rpc_method_handler(
           servicer.Follow,
           request_deserializer=tsns__pb2.ToggleFollow.FromString,

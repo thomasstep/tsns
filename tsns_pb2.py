@@ -19,35 +19,35 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\ntsns.proto\"=\n\x05Login\x12\x10\n\x08Username\x18\x01 \x01(\t\x12\x10\n\x08Password\x18\x02 \x01(\t\x12\x10\n\x08LoggedIn\x18\x03 \x01(\x08\"A\n\x0cToggleFollow\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0e\n\x06Target\x18\x02 \x01(\t\x12\x11\n\tFollowing\x18\x03 \x01(\x08\"\x1a\n\x08ListUser\x12\x0e\n\x06Origin\x18\x01 \x01(\t\"5\n\nReturnList\x12\x14\n\x0c\x43urrentUsers\x18\x01 \x01(\t\x12\x11\n\tFollowers\x18\x02 \x01(\t\"2\n\x04Post\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0c\n\x04Post\x18\x02 \x01(\t\x12\x0c\n\x04Time\x18\x03 \x01(\t2\xb2\x01\n\x18TinySocialNetworkService\x12(\n\x06\x46ollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12*\n\x08Unfollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12 \n\x04List\x12\t.ListUser\x1a\x0b.ReturnList\"\x00\x12\x1e\n\x08Timeline\x12\x05.Post\x1a\x05.Post\"\x00(\x01\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\ntsns.proto\"<\n\x04\x41uth\x12\x10\n\x08Username\x18\x01 \x01(\t\x12\x10\n\x08Password\x18\x02 \x01(\t\x12\x10\n\x08LoggedIn\x18\x03 \x01(\x08\"A\n\x0cToggleFollow\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0e\n\x06Target\x18\x02 \x01(\t\x12\x11\n\tFollowing\x18\x03 \x01(\x08\"\x1a\n\x08ListUser\x12\x0e\n\x06Origin\x18\x01 \x01(\t\"5\n\nReturnList\x12\x14\n\x0c\x43urrentUsers\x18\x01 \x01(\t\x12\x11\n\tFollowers\x18\x02 \x01(\t\"2\n\x04Post\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0c\n\x04Post\x18\x02 \x01(\t\x12\x0c\n\x04Time\x18\x03 \x01(\t2\xcb\x01\n\x18TinySocialNetworkService\x12\x17\n\x05Login\x12\x05.Auth\x1a\x05.Auth\"\x00\x12(\n\x06\x46ollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12*\n\x08Unfollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12 \n\x04List\x12\t.ListUser\x1a\x0b.ReturnList\"\x00\x12\x1e\n\x08Timeline\x12\x05.Post\x1a\x05.Post\"\x00(\x01\x30\x01\x62\x06proto3')
 )
 
 
 
 
-_LOGIN = _descriptor.Descriptor(
-  name='Login',
-  full_name='Login',
+_AUTH = _descriptor.Descriptor(
+  name='Auth',
+  full_name='Auth',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='Username', full_name='Login.Username', index=0,
+      name='Username', full_name='Auth.Username', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='Password', full_name='Login.Password', index=1,
+      name='Password', full_name='Auth.Password', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='LoggedIn', full_name='Login.LoggedIn', index=2,
+      name='LoggedIn', full_name='Auth.LoggedIn', index=2,
       number=3, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -66,7 +66,7 @@ _LOGIN = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=14,
-  serialized_end=75,
+  serialized_end=74,
 )
 
 
@@ -110,8 +110,8 @@ _TOGGLEFOLLOW = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=77,
-  serialized_end=142,
+  serialized_start=76,
+  serialized_end=141,
 )
 
 
@@ -141,8 +141,8 @@ _LISTUSER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=144,
-  serialized_end=170,
+  serialized_start=143,
+  serialized_end=169,
 )
 
 
@@ -179,8 +179,8 @@ _RETURNLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=172,
-  serialized_end=225,
+  serialized_start=171,
+  serialized_end=224,
 )
 
 
@@ -224,23 +224,23 @@ _POST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=227,
-  serialized_end=277,
+  serialized_start=226,
+  serialized_end=276,
 )
 
-DESCRIPTOR.message_types_by_name['Login'] = _LOGIN
+DESCRIPTOR.message_types_by_name['Auth'] = _AUTH
 DESCRIPTOR.message_types_by_name['ToggleFollow'] = _TOGGLEFOLLOW
 DESCRIPTOR.message_types_by_name['ListUser'] = _LISTUSER
 DESCRIPTOR.message_types_by_name['ReturnList'] = _RETURNLIST
 DESCRIPTOR.message_types_by_name['Post'] = _POST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Login = _reflection.GeneratedProtocolMessageType('Login', (_message.Message,), dict(
-  DESCRIPTOR = _LOGIN,
+Auth = _reflection.GeneratedProtocolMessageType('Auth', (_message.Message,), dict(
+  DESCRIPTOR = _AUTH,
   __module__ = 'tsns_pb2'
-  # @@protoc_insertion_point(class_scope:Login)
+  # @@protoc_insertion_point(class_scope:Auth)
   ))
-_sym_db.RegisterMessage(Login)
+_sym_db.RegisterMessage(Auth)
 
 ToggleFollow = _reflection.GeneratedProtocolMessageType('ToggleFollow', (_message.Message,), dict(
   DESCRIPTOR = _TOGGLEFOLLOW,
@@ -278,13 +278,22 @@ _TINYSOCIALNETWORKSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=280,
-  serialized_end=458,
+  serialized_start=279,
+  serialized_end=482,
   methods=[
+  _descriptor.MethodDescriptor(
+    name='Login',
+    full_name='TinySocialNetworkService.Login',
+    index=0,
+    containing_service=None,
+    input_type=_AUTH,
+    output_type=_AUTH,
+    serialized_options=None,
+  ),
   _descriptor.MethodDescriptor(
     name='Follow',
     full_name='TinySocialNetworkService.Follow',
-    index=0,
+    index=1,
     containing_service=None,
     input_type=_TOGGLEFOLLOW,
     output_type=_TOGGLEFOLLOW,
@@ -293,7 +302,7 @@ _TINYSOCIALNETWORKSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Unfollow',
     full_name='TinySocialNetworkService.Unfollow',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_TOGGLEFOLLOW,
     output_type=_TOGGLEFOLLOW,
@@ -302,7 +311,7 @@ _TINYSOCIALNETWORKSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='List',
     full_name='TinySocialNetworkService.List',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_LISTUSER,
     output_type=_RETURNLIST,
@@ -311,7 +320,7 @@ _TINYSOCIALNETWORKSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Timeline',
     full_name='TinySocialNetworkService.Timeline',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=_POST,
     output_type=_POST,
