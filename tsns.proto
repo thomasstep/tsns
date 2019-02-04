@@ -1,8 +1,15 @@
 syntax = "proto3";
 
+message Auth {
+  string Username = 1;
+  string Password = 2;
+  bool LoggedIn = 3;
+}
+
 message ToggleFollow {
   string Origin = 1;
   string Target = 2;
+  bool Following = 3;
 }
 
 message ListUser {
@@ -21,6 +28,7 @@ message Post {
 }
 
 service TinySocialNetworkService {
+  rpc Login(Auth) returns (Auth) {}
   rpc Follow(ToggleFollow) returns (ToggleFollow) {}
   rpc Unfollow(ToggleFollow) returns (ToggleFollow) {}
   rpc List(ListUser) returns (ReturnList) {}
