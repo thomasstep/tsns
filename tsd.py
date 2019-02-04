@@ -33,7 +33,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 				files.append(f)
 			for f in files:
 				nextUser = {}
-				with open("./users/" + f) as jsonFile:
+				with open(os.path.join(os.getcwd(), "users/" + f)) as jsonFile:
 					nextUser = json.load(jsonFile)
 					self.currentUsers[nextUser["username"]] = copy.deepcopy(nextUser)
 			print(self.currentUsers)	
@@ -44,7 +44,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 			self.save(user)
 
 	def save(self, username):
-		with open("./user/" + username + ".json", "w") as saveFile:
+		with open(os.path.join(os.getcwd(), "users/" + username + ".json"), "w") as saveFile:
 			print("Saving..." + json.dumps(self.currentUsers[username]))
 			json.dump(self.currentUsers[username], saveFile)
 			saveFile.close()
