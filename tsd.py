@@ -69,20 +69,62 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		response = tsns_pb2.ToggleFollow()
 		username = request.Origin
 		target = request.Target
-		self.currentUsers[username]["following"].append(target)
-		self.save(username)
-		print(self.currentUsers)
 		response.Origin = username
 		response.Target = target 
+		if username not in self.currentUsers.keys():
+			response.Following = False
+			return response
+		following = self.currentUsers[username]["following"]
+		followers = self.currentUsers[target]["followers"]
+		if target in following:
+			response.Following = True
+			return response 
+		following.append(target)
+		self.save(username)
+		if username in followers:
+			response.Following = True
+			return response
+		followers.append(username)	
+		self.save(target)
 		response.Following = True
 		return response
 
 
 	def Unfollow(self, request, context):
 		response = tsns_pb2.ToggleFollow()
-		response.Origin = request.Origin
-		response.Target = request.Target
+		username = request.Origin
+		target = request.Target
+		response.Origin = username
+		response.Target = target 
+		if username not in self.currentUsers.keys():
+			response.Following = True
+			return response
+		following = self.currentUsers[username]["following"]
+		followers = self.currentUsers[target]["followers"]
+		if target not in following:
+			response.Following = False
+			return response 
+		following.remove(target)
+		self.save(username)
+		if username not in followers:
+			response.Following = False
+			return response
+		followers.remove(username)	
+		self.save(target)
 		response.Following = False
+		return response
+
+	def List(self, request, context):
+		response = tsns_pb2.ReturnList()
+		username = request.Origin
+		currentUsersList = ""
+		currentFollowersList = ""
+		for user in self.currentUsers.keys():
+			currentUsersList += user + " "
+		for user in self.currentUsers[username]["followers"]:
+			currentFollowersList += user + " "
+		response.CurrentUsers = currentUsersList
+		response.Followers = currentFollowersList
 		return response
 
 # Create the server
