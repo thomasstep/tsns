@@ -36,7 +36,6 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 				with open(os.path.join(os.getcwd(), "users/" + f)) as jsonFile:
 					nextUser = json.load(jsonFile)
 					self.currentUsers[nextUser["username"]] = copy.deepcopy(nextUser)
-			print(self.currentUsers)	
 
 	def saveAll(self):
 		users = self.currentUsers.keys()
@@ -45,20 +44,16 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 
 	def save(self, username):
 		with open(os.path.join(os.getcwd(), "users/" + username + ".json"), "w") as saveFile:
-			print("Saving..." + json.dumps(self.currentUsers[username]))
 			json.dump(self.currentUsers[username], saveFile)
 			saveFile.close()
 
 	def Login(self, request, context):
 		username = request.Username
 		if username not in self.currentUsers:
-			print("Making user account.")
 			newUser = copy.deepcopy(userTemplate)
 			newUser["username"] = username
 			self.currentUsers[newUser["username"]] = copy.deepcopy(newUser)
 			self.save(username)
-		else:
-			print(username + " logged in.")
 		response = tsns_pb2.Auth()
 		response.Username = username
 		response.Password = request.Password
