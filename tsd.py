@@ -4,6 +4,7 @@ import time
 import os
 import json
 import copy
+import sys
 
 # Import grpc classes
 import tsns_pb2
@@ -130,7 +131,7 @@ tsns_pb2_grpc.add_TinySocialNetworkServiceServicer_to_server(tsnsServicer(), ser
 
 # Listen on port 8888
 print("Starting server on port 8888")
-server.add_insecure_port("[::]:8888")
+server.add_insecure_port("[::]:" + sys.argv[1])
 server.start()
 
 try:
