@@ -50,3 +50,15 @@ reply = stub.List(listuser)
 
 # Checking
 print("Users: " + reply.CurrentUsers + " Followers: " + reply.Followers)
+
+# Creating a follow request
+unfollow = tsns_pb2.ToggleFollow(Origin="stoleru", Target="welch", Following=False)
+
+# Making the call
+stub.Unfollow(unfollow)
+
+listuser = tsns_pb2.ListUser(Origin="welch")
+reply = stub.List(listuser)
+
+# Checking
+print("Users: " + reply.CurrentUsers + " Followers: " + reply.Followers)
