@@ -127,24 +127,29 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		origin = request.Origin
 		timeline = self.currentUsers[origin]["timeline"]
 		post = tsns_pb2.Post()
-		post.Origin = "God"
-		for timelinePost in timeline[len(timeline - 20):]:
-			post.Origin = timelinePost[1]
-			post.Time = timelinePost[2]
-			post.Post = timelinePost[3]
+		if len(timeline) > 20:
+			timeline = timeline[len(timeline-20)]
+		timeline.reverse()
+		for timelinePost in timeline:
+			post.Origin = timelinePost[0]
+			post.Time = time.asctime(time.localtime(timelinePost[1]))
+			post.Post = timelinePost[2]
+			print(post.Origin + " " + post.Time + " " + post.Post)
 			yield post
 
-
-#		for newPost in request_iterator:
-#			print(newPost.Origin + " " + newPost.Post)
-#			postTime = time.time()
-#			newPost.Time = time.asctime(time.localtime(postTime))
-#			currentUser = self.currentUsers[newPost.Origin]
-#			currentUser["posts"].append((copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
-#			for follower in currentUser["followers"]:
-#				self.currentUsers[follower]["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(newPost.Time), copy.deepcopy(newPost.Post))
-#			print(newPost.Time)
-#			yield newPost	
+	def MakePost(self, request, context):
+		newPost = tsns_pb2.Post()
+		newPost.Origin = request.Origin
+		newPost.Post = request.Post
+		print(newPost.Origin + " " + newPost.Post)
+		postTime = time.time()
+		newPost.Time = time.asctime(time.localtime(postTime))
+		currentUser = self.currentUsers[newPost.Origin]
+		currentUser["posts"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
+		currentUser["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
+		for follower in currentUser["followers"]:
+			self.currentUsers[follower]["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(newPost.Time), copy.deepcopy(newPost.Post)))
+		return newPost	
 
 # Create the server
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
