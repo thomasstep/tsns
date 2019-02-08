@@ -123,6 +123,29 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		response.Followers = currentFollowersList
 		return response
 
+	def Timeline(self, request, context):
+		origin = request.Origin
+		timeline = self.currentUsers[origin]["timeline"]
+		post = tsns_pb2.Post()
+		post.Origin = "God"
+		for timelinePost in timeline[len(timeline - 20):]:
+			post.Origin = timelinePost[1]
+			post.Time = timelinePost[2]
+			post.Post = timelinePost[3]
+			yield post
+
+
+#		for newPost in request_iterator:
+#			print(newPost.Origin + " " + newPost.Post)
+#			postTime = time.time()
+#			newPost.Time = time.asctime(time.localtime(postTime))
+#			currentUser = self.currentUsers[newPost.Origin]
+#			currentUser["posts"].append((copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
+#			for follower in currentUser["followers"]:
+#				self.currentUsers[follower]["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(newPost.Time), copy.deepcopy(newPost.Post))
+#			print(newPost.Time)
+#			yield newPost	
+
 # Create the server
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
