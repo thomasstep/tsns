@@ -62,3 +62,13 @@ reply = stub.List(listuser)
 
 # Checking
 print("Users: " + reply.CurrentUsers + " Followers: " + reply.Followers)
+
+post1 = tsns_pb2.Post(Origin="thomas", Post="hi", Time="0")
+post2 = tsns_pb2.Post(Origin="thomas", Post="hello", Time="0")
+post3 = tsns_pb2.Post(Origin="thomas", Post="howdy", Time="0")
+for post in [post1, post2, post3]:
+	stub.MakePost(post)
+print("Made posts.")
+timelinereq = tsns_pb2.TimelineRequest(Origin="thomas")
+for receivedPost in stub.Timeline(timelinereq):
+	print(receivedPost.Origin + " " + receivedPost.Time + " " + receivedPost.Post)
