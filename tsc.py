@@ -25,7 +25,17 @@ def proccess_command(c, u):
 	reply = stub.List(listuser)
         print("Users: " + reply.CurrentUsers + "Followers: " + reply.Followers)
     elif c == "TIMELINE":
-        print("TIMELINE")
+	print("Now you are in the timeline")
+        try:
+		while True:
+			text = raw_input()
+			post = tsns_pb2.Post(Origin=u, Post=text, Time="0")
+			stub.MakePost(post)
+			timelinereq = tsns_pb2.TimelineRequest(Origin=u)
+			for receivedPost in stub.Timeline(timelinereq):
+				print(receivedPost.Origin + " " + receivedPost.Time + " " + receivedPost.Post)
+	except KeyboardInterrupt():
+		pass
     else:
 	command, user = c.split(" ", 1)
     	if command == "FOLLOW":

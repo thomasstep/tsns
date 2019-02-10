@@ -34,8 +34,13 @@ class TinySocialNetworkServiceStub(object):
         request_serializer=tsns__pb2.ListUser.SerializeToString,
         response_deserializer=tsns__pb2.ReturnList.FromString,
         )
-    self.Timeline = channel.stream_stream(
+    self.Timeline = channel.unary_stream(
         '/TinySocialNetworkService/Timeline',
+        request_serializer=tsns__pb2.TimelineRequest.SerializeToString,
+        response_deserializer=tsns__pb2.Post.FromString,
+        )
+    self.MakePost = channel.unary_unary(
+        '/TinySocialNetworkService/MakePost',
         request_serializer=tsns__pb2.Post.SerializeToString,
         response_deserializer=tsns__pb2.Post.FromString,
         )
@@ -73,7 +78,14 @@ class TinySocialNetworkServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def Timeline(self, request_iterator, context):
+  def Timeline(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def MakePost(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -103,8 +115,13 @@ def add_TinySocialNetworkServiceServicer_to_server(servicer, server):
           request_deserializer=tsns__pb2.ListUser.FromString,
           response_serializer=tsns__pb2.ReturnList.SerializeToString,
       ),
-      'Timeline': grpc.stream_stream_rpc_method_handler(
+      'Timeline': grpc.unary_stream_rpc_method_handler(
           servicer.Timeline,
+          request_deserializer=tsns__pb2.TimelineRequest.FromString,
+          response_serializer=tsns__pb2.Post.SerializeToString,
+      ),
+      'MakePost': grpc.unary_unary_rpc_method_handler(
+          servicer.MakePost,
           request_deserializer=tsns__pb2.Post.FromString,
           response_serializer=tsns__pb2.Post.SerializeToString,
       ),
