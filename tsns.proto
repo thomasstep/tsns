@@ -21,6 +21,10 @@ message ReturnList {
   string Followers = 2;
 }
 
+message TimelineRequest {
+  string Origin = 1;
+}
+
 message Post {
   string Origin = 1;
   string Post = 2;
@@ -32,5 +36,6 @@ service TinySocialNetworkService {
   rpc Follow(ToggleFollow) returns (ToggleFollow) {}
   rpc Unfollow(ToggleFollow) returns (ToggleFollow) {}
   rpc List(ListUser) returns (ReturnList) {}
-  rpc Timeline(stream Post) returns (stream Post) {}
+  rpc Timeline(TimelineRequest) returns (stream Post) {}
+  rpc MakePost(Post) returns (Post) {}
 }
