@@ -107,7 +107,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		response.Origin = username
 		response.Target = target 
 		if username not in self.currentUsers.keys():
-			response.Following = False
+			response.Following = True
 			return response
 		following = self.currentUsers[username]["following"]
 		followers = self.currentUsers[target]["followers"]
