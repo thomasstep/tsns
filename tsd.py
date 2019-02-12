@@ -54,19 +54,24 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		response = tsns_pb2.Auth()
 		response.Username = username
 		response.Password = request.Password
-		response.LoggedIn = True
-		if username in self.currentUsers:
-			if self.currentUsers[username]["loggedin"]:
-				response.LoggedIn = False
-			else:
-				self.currentUsers[username]["loggedin"] = True
-		if username not in self.currentUsers:
-			newUser = copy.deepcopy(userTemplate)
-			newUser["username"] = username
-			self.currentUsers[newUser["username"]] = copy.deepcopy(newUser)
-			self.currentUsers[newUser["username"]]["loggedin"] = False
-			self.save(username)
-		return response
+		if request.LoggedIn == False:
+			if username in self.currentUsers:
+				if self.currentUsers[username]["loggedin"]:
+					response.LoggedIn = False
+				else:
+					self.currentUsers[username]["loggedin"] = True
+			if username not in self.currentUsers:
+				newUser = copy.deepcopy(userTemplate)
+				newUser["username"] = username
+				self.currentUsers[newUser["username"]] = copy.deepcopy(newUser)
+				self.currentUsers[newUser["username"]]["loggedin"] = False
+				self.save(username)
+			response.LoggedIn = True
+			return response
+		else:
+			self.currentUsers[username]["loggedin"] = False
+			response.LoggedIn = False
+			return response
 
 	def Follow(self, request, context):
 		response = tsns_pb2.ToggleFollow()
