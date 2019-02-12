@@ -72,13 +72,15 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 			return response
 		following = self.currentUsers[username]["following"]
 		followers = self.currentUsers[target]["followers"]
+		# Check first if the target is already following the origin
 		if target in following:
-			response.Following = True
+			response.Following = False
 			return response 
 		following.append(target)
 		self.save(username)
+		#Check first if the origin is already following the target
 		if username in followers:
-			response.Following = True
+			response.Following = False
 			return response
 		followers.append(username)	
 		self.save(target)
