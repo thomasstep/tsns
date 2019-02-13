@@ -67,13 +67,3 @@ while(True):
 	r = proccess_command(command, username)
 	
 	
-
-
-
-
-
-
-
-
-
-
