@@ -82,19 +82,22 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		if username not in self.currentUsers.keys():
 			response.Following = False
 			return response
+		followTime = time.time()
 		following = self.currentUsers[username]["following"]
 		followers = self.currentUsers[target]["followers"]
 		# Check first if the target is already following the origin
-		if target in following:
-			response.Following = False
-			return response 
-		following.append(target)
+		for follower in following:
+			if follower[0] == target:
+				response.Following = False
+				return response 
+		following.append((target, followTime))
 		self.save(username)
 		#Check first if the origin is already following the target
-		if username in followers:
-			response.Following = False
-			return response
-		followers.append(username)	
+		for follower in followers:
+			if follower[0] == username:
+				response.Following = False
+				return response
+		followers.append((username, followTime))	
 		self.save(target)
 		response.Following = True
 		return response
@@ -112,13 +115,20 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		following = self.currentUsers[username]["following"]
 		followers = self.currentUsers[target]["followers"]
 		# Check if the target is even following
-		if target not in following:
+		found = False
+		for follower in following:
+			if follower[0] == target:
+				found = True
+		if not found:
 			response.Following = True
 			return response 
 		following.remove(target)
 		self.save(username)
 		# Check if the origin is even following the target
-		if username not in followers:
+		for follower in followers:
+			if follower[0] == username:
+				found = True
+		if not found:
 			response.Following = True
 			return response
 		followers.remove(username)	
