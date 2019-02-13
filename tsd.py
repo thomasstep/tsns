@@ -37,6 +37,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 				with open(os.path.join(os.getcwd(), "users/" + f)) as jsonFile:
 					nextUser = json.load(jsonFile)
 					self.currentUsers[nextUser["username"]] = copy.deepcopy(nextUser)
+					self.currentUsers[nextUser["username"]]["loggedin"] = False
 
 	def saveAll(self):
 		users = self.currentUsers.keys()
@@ -50,16 +51,27 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 
 	def Login(self, request, context):
 		username = request.Username
-		if username not in self.currentUsers:
-			newUser = copy.deepcopy(userTemplate)
-			newUser["username"] = username
-			self.currentUsers[newUser["username"]] = copy.deepcopy(newUser)
-			self.save(username)
 		response = tsns_pb2.Auth()
 		response.Username = username
 		response.Password = request.Password
-		response.LoggedIn = True
-		return response
+		if request.LoggedIn == False:
+			if username in self.currentUsers:
+				if self.currentUsers[username]["loggedin"]:
+					response.LoggedIn = False
+				else:
+					self.currentUsers[username]["loggedin"] = True
+			if username not in self.currentUsers:
+				newUser = copy.deepcopy(userTemplate)
+				newUser["username"] = username
+				self.currentUsers[newUser["username"]] = copy.deepcopy(newUser)
+				self.currentUsers[newUser["username"]]["loggedin"] = False
+				self.save(username)
+			response.LoggedIn = True
+			return response
+		else:
+			self.currentUsers[username]["loggedin"] = False
+			response.LoggedIn = False
+			return response
 
 	def Follow(self, request, context):
 		response = tsns_pb2.ToggleFollow()
@@ -72,13 +84,15 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 			return response
 		following = self.currentUsers[username]["following"]
 		followers = self.currentUsers[target]["followers"]
+		# Check first if the target is already following the origin
 		if target in following:
-			response.Following = True
+			response.Following = False
 			return response 
 		following.append(target)
 		self.save(username)
+		#Check first if the origin is already following the target
 		if username in followers:
-			response.Following = True
+			response.Following = False
 			return response
 		followers.append(username)	
 		self.save(target)
@@ -97,13 +111,15 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 			return response
 		following = self.currentUsers[username]["following"]
 		followers = self.currentUsers[target]["followers"]
+		# Check if the target is even following
 		if target not in following:
-			response.Following = False
+			response.Following = True
 			return response 
 		following.remove(target)
 		self.save(username)
+		# Check if the origin is even following the target
 		if username not in followers:
-			response.Following = False
+			response.Following = True
 			return response
 		followers.remove(username)	
 		self.save(target)
@@ -149,6 +165,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		currentUser["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
 		for follower in currentUser["followers"]:
 			self.currentUsers[follower]["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(newPost.Time), copy.deepcopy(newPost.Post)))
+		self.saveAll()
 		return newPost	
 
 # Create the server
