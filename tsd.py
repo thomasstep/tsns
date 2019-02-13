@@ -149,6 +149,15 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		response.Followers = currentFollowersList
 		return response
 
+	def getFollowTime(self, origin, target):
+		if origin == target:
+			return 0.0
+		following = self.currentUsers[origin]["following"]
+		for followee in following:
+			# Find the right person and return the timestamp they started following them for
+			if followee[0] == target:
+				return followee[1]
+
 	def Timeline(self, request, context):
 		origin = request.Origin
 		timeline = copy.deepcopy(self.currentUsers[origin]["timeline"])
@@ -157,24 +166,24 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 			timeline = timeline[len(timeline-20)]
 		timeline.reverse()
 		for timelinePost in timeline:
-			post.Origin = timelinePost[0]
-			post.Time = time.asctime(time.localtime(timelinePost[1]))
-			post.Post = timelinePost[2]
-			print(post.Origin + " " + post.Time + " " + post.Post)
-			yield post
+			if timelinePost[1] >= self.getFollowTime(origin, timelinePost[0]):
+				post.Origin = timelinePost[0]
+				post.Time = time.asctime(time.localtime(timelinePost[1]))
+				post.Post = timelinePost[2]
+				yield post
 
 	def MakePost(self, request, context):
 		newPost = tsns_pb2.Post()
 		newPost.Origin = request.Origin
 		newPost.Post = request.Post
-		print(newPost.Origin + " " + newPost.Post)
 		postTime = time.time()
 		newPost.Time = time.asctime(time.localtime(postTime))
+		print(newPost.Origin + " " + newPost.Time + " " + newPost.Post)
 		currentUser = self.currentUsers[newPost.Origin]
 		currentUser["posts"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
 		currentUser["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
 		for follower in currentUser["followers"]:
-			self.currentUsers[follower[0]]["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(newPost.Time), copy.deepcopy(newPost.Post)))
+			self.currentUsers[follower[0]]["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
 		self.saveAll()
 		return newPost	
 
