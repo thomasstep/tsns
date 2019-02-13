@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import grpc
 from concurrent import futures
 import time
