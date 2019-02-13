@@ -118,20 +118,20 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		found = False
 		for follower in following:
 			if follower[0] == target:
-				found = True
+				found = follower
 		if not found:
 			response.Following = True
 			return response 
-		following.remove(target)
+		following.remove(found)
 		self.save(username)
 		# Check if the origin is even following the target
 		for follower in followers:
 			if follower[0] == username:
-				found = True
+				found = follower
 		if not found:
 			response.Following = True
 			return response
-		followers.remove(username)	
+		followers.remove(found)	
 		self.save(target)
 		response.Following = False
 		return response
@@ -144,7 +144,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		for user in self.currentUsers.keys():
 			currentUsersList += user + " "
 		for user in self.currentUsers[username]["followers"]:
-			currentFollowersList += user + " "
+			currentFollowersList += user[0] + " "
 		response.CurrentUsers = currentUsersList
 		response.Followers = currentFollowersList
 		return response
@@ -174,7 +174,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		currentUser["posts"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
 		currentUser["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
 		for follower in currentUser["followers"]:
-			self.currentUsers[follower]["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(newPost.Time), copy.deepcopy(newPost.Post)))
+			self.currentUsers[follower[0]]["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(newPost.Time), copy.deepcopy(newPost.Post)))
 		self.saveAll()
 		return newPost	
 
