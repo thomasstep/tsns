@@ -141,7 +141,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 
 	def Timeline(self, request, context):
 		origin = request.Origin
-		timeline = self.currentUsers[origin]["timeline"]
+		timeline = copy.deepcopy(self.currentUsers[origin]["timeline"])
 		post = tsns_pb2.Post()
 		if len(timeline) > 20:
 			timeline = timeline[len(timeline-20)]
