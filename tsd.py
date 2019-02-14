@@ -171,7 +171,6 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		post = tsns_pb2.Post()
 		if len(timeline) > 20:
 			timeline = timeline[(len(timeline)-20):]
-		timeline.reverse()
 		for timelinePost in timeline:
 			if timelinePost[1] >= self.getFollowTime(origin, timelinePost[0]):
 				post.Origin = timelinePost[0]
@@ -200,7 +199,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		username = request.Origin
 		newPosts.Origin = username
 		updates = self.currentUsers[username]["timelineUpdates"]
-		if not updates:
+		if len(updates) == 0:
 			newPosts.Origin = ""
 			newPosts.Post = ""
 			newPosts.Time = ""
