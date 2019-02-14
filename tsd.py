@@ -172,6 +172,10 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		if len(timeline) > 20:
 			timeline = timeline[(len(timeline)-20):]
 		for timelinePost in timeline:
+			try:
+				self.currentUsers[origin]["timelineUpdates"].remove(timelinePost)
+			except ValueError:
+				pass
 			if timelinePost[1] >= self.getFollowTime(origin, timelinePost[0]):
 				post.Origin = timelinePost[0]
 				post.Time = time.asctime(time.localtime(timelinePost[1]))
