@@ -28,15 +28,16 @@ def sending(username):
 		post = tsns_pb2.Post(Origin=username, Post=text, Time="0")
 		stub.MakePost(post)
 
+
 def receiving(username):
 	timelinereq = tsns_pb2.TimelineRequest(Origin=username)
 	posts = stub.Timeline(timelinereq)
 	for receivedPost in posts:
 			print(receivedPost.Origin + " " + receivedPost.Time + " " + receivedPost.Post)
 	while True:
-		post = tsns_pb2.NewPosts(Origin=username, IsNewPost=False, Post="", Time="0")
-		if post.IsNewPost:	
-			for receivedPost in stub.TimelineUpdate(post):
+		post = tsns_pb2.NewPosts(Origin=username, IsNewPost=False, Post="", Time="0")	
+		for receivedPost in stub.TimelineUpdate(post):
+			if receivedPost.IsNewPost:
 				print(receivedPost.Origin + " " + receivedPost.Time + " " + receivedPost.Post)
 		time.sleep(1)
 		
