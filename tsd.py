@@ -214,6 +214,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 				newPosts.IsNewPost = True
 				updates.pop(0)
 				yield newPosts
+		self.saveAll()
 
 # Create the server
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
