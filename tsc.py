@@ -2,6 +2,8 @@ import grpc
 import sys
 import subprocess
 import thread
+import threading
+import time
 
 # Import grpc classes
 import tsns_pb2
@@ -20,10 +22,25 @@ def get_command():
     text = raw_input('Cmd>')
     return text
 
-#def sending(username):
+def sending(username):
+	while True:
+		text = raw_input()
+		post = tsns_pb2.Post(Origin=username, Post=text, Time="0")
+		stub.MakePost(post)
 
-#def receiving(username):
-
+def receiving(username):
+	timelinereq = tsns_pb2.TimelineRequest(Origin=username)
+	posts = stub.Timeline(timelinereq)
+	for receivedPost in posts:
+			print(receivedPost.Origin + " " + receivedPost.Time + " " + receivedPost.Post)
+	while True:
+		post = tsns_pb2.NewPosts(Origin=username, IsNewPost=False, Post="", Time="0")
+		if post.IsNewPost:	
+			for receivedPost in stub.TimelineUpdate(post):
+				print(receivedPost.Origin + " " + receivedPost.Time + " " + receivedPost.Post)
+		time.sleep(1)
+		
+		
 def proccess_command(c, u):
     if c == "LIST":
 	listuser = tsns_pb2.ListUser(Origin=u)
@@ -31,23 +48,16 @@ def proccess_command(c, u):
         print("Users: " + reply.CurrentUsers + "Followers: " + reply.Followers)
     elif c == "TIMELINE":
 	print("Now you are in the timeline")
-        try:
-		#thread_sent = threading.Thread(target=sending, args(u,))
-		#thread_receiving = threading.Thread(target=receiving, args(u,))
+	thread_sent = threading.Thread(target=sending, args=(u,))
+	thread_receiving = threading.Thread(target=receiving, args=(u,))
+	
+	thread_sent.daemon = True
+	thread_receiving.daemon = True
 
-		
-		while True:
-			text = raw_input()
-			post = tsns_pb2.Post(Origin=u, Post=text, Time="0")
-			stub.MakePost(post)
-			timelinereq = tsns_pb2.TimelineRequest(Origin=u)
-			for receivedPost in stub.Timeline(timelinereq):
-				print(receivedPost.Origin + " " + receivedPost.Time + " " + receivedPost.Post)
-			
-	except KeyboardInterrupt():
-		#logout
-		#
-		pass
+	thread_receiving.start()
+	thread_sent.start()	
+	while True:
+		time.sleep(1)	
     else:
 	command, user = c.split(" ", 1)
     	if command == "FOLLOW":
@@ -87,11 +97,16 @@ if response.LoggedIn == False:
 else:
 	#keyboard interrupt and the logout 
 	#just like TIMELINE
-	while(True):
-		#Displaying title
-		display_title()
-		#Getting command input by user
-		command = get_command()
-		r = proccess_command(command, username)
+	try:
+		while(True):
+			#Displaying title
+			display_title()
+			#Getting command input by user
+			command = get_command()
+			r = proccess_command(command, username)
+	except KeyboardInterrupt:
+		logout = tsns_pb2.Auth(Username=username, Password="me", LoggedIn=True)
+		response = stub.Login(logout)	
+		print("you logged out")
 	
 	
