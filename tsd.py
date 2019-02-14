@@ -170,7 +170,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		timeline = copy.deepcopy(self.currentUsers[origin]["timeline"])
 		post = tsns_pb2.Post()
 		if len(timeline) > 20:
-			timeline = timeline[len(timeline-20)]
+			timeline = timeline[len(timeline)-20]
 		timeline.reverse()
 		for timelinePost in timeline:
 			if timelinePost[1] >= self.getFollowTime(origin, timelinePost[0]):
