@@ -60,7 +60,11 @@ def proccess_command(c, u):
 	while True:
 		time.sleep(1)	
     else:
-	command, user = c.split(" ", 1)
+	try: 
+		command, user = c.split(" ", 1)
+	except ValueError:
+		print("Invalid Command")
+		return
     	if command == "FOLLOW":
         	follow = tsns_pb2.ToggleFollow(Origin=u, Target=user, Following=False)
         	r = stub.Follow(follow)
