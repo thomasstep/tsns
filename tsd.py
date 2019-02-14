@@ -207,11 +207,12 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 			newPosts.IsNewPost = False
 			yield newPosts
 		else:
-			for update in updates:
-				newPosts.Origin = update[0]
-				newPosts.Time = time.asctime(time.localtime(update[1]))
-				newPosts.Post = update[2]
+			for i in range(len(updates)):
+				newPosts.Origin = updates[0][0]
+				newPosts.Time = time.asctime(time.localtime(updates[0][1]))
+				newPosts.Post = updates[0][2]
 				newPosts.IsNewPost = True
+				updates.pop(0)
 				yield newPosts
 
 # Create the server
