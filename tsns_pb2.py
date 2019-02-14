@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\ntsns.proto\"<\n\x04\x41uth\x12\x10\n\x08Username\x18\x01 \x01(\t\x12\x10\n\x08Password\x18\x02 \x01(\t\x12\x10\n\x08LoggedIn\x18\x03 \x01(\x08\"A\n\x0cToggleFollow\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0e\n\x06Target\x18\x02 \x01(\t\x12\x11\n\tFollowing\x18\x03 \x01(\x08\"\x1a\n\x08ListUser\x12\x0e\n\x06Origin\x18\x01 \x01(\t\"5\n\nReturnList\x12\x14\n\x0c\x43urrentUsers\x18\x01 \x01(\t\x12\x11\n\tFollowers\x18\x02 \x01(\t\"!\n\x0fTimelineRequest\x12\x0e\n\x06Origin\x18\x01 \x01(\t\"2\n\x04Post\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0c\n\x04Post\x18\x02 \x01(\t\x12\x0c\n\x04Time\x18\x03 \x01(\t2\xf0\x01\n\x18TinySocialNetworkService\x12\x17\n\x05Login\x12\x05.Auth\x1a\x05.Auth\"\x00\x12(\n\x06\x46ollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12*\n\x08Unfollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12 \n\x04List\x12\t.ListUser\x1a\x0b.ReturnList\"\x00\x12\'\n\x08Timeline\x12\x10.TimelineRequest\x1a\x05.Post\"\x00\x30\x01\x12\x1a\n\x08MakePost\x12\x05.Post\x1a\x05.Post\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\ntsns.proto\"<\n\x04\x41uth\x12\x10\n\x08Username\x18\x01 \x01(\t\x12\x10\n\x08Password\x18\x02 \x01(\t\x12\x10\n\x08LoggedIn\x18\x03 \x01(\x08\"A\n\x0cToggleFollow\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0e\n\x06Target\x18\x02 \x01(\t\x12\x11\n\tFollowing\x18\x03 \x01(\x08\"\x1a\n\x08ListUser\x12\x0e\n\x06Origin\x18\x01 \x01(\t\"5\n\nReturnList\x12\x14\n\x0c\x43urrentUsers\x18\x01 \x01(\t\x12\x11\n\tFollowers\x18\x02 \x01(\t\"!\n\x0fTimelineRequest\x12\x0e\n\x06Origin\x18\x01 \x01(\t\"2\n\x04Post\x12\x0e\n\x06Origin\x18\x01 \x01(\t\x12\x0c\n\x04Post\x18\x02 \x01(\t\x12\x0c\n\x04Time\x18\x03 \x01(\t\"I\n\x08NewPosts\x12\x11\n\tIsNewPost\x18\x01 \x01(\x08\x12\x0e\n\x06Origin\x18\x02 \x01(\t\x12\x0c\n\x04Post\x18\x03 \x01(\t\x12\x0c\n\x04Time\x18\x04 \x01(\t2\x9c\x02\n\x18TinySocialNetworkService\x12\x17\n\x05Login\x12\x05.Auth\x1a\x05.Auth\"\x00\x12(\n\x06\x46ollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12*\n\x08Unfollow\x12\r.ToggleFollow\x1a\r.ToggleFollow\"\x00\x12 \n\x04List\x12\t.ListUser\x1a\x0b.ReturnList\"\x00\x12\'\n\x08Timeline\x12\x10.TimelineRequest\x1a\x05.Post\"\x00\x30\x01\x12\x1a\n\x08MakePost\x12\x05.Post\x1a\x05.Post\"\x00\x12*\n\x0eTimelineUpdate\x12\t.NewPosts\x1a\t.NewPosts\"\x00\x30\x01\x62\x06proto3')
 )
 
 
@@ -259,12 +259,65 @@ _POST = _descriptor.Descriptor(
   serialized_end=311,
 )
 
+
+_NEWPOSTS = _descriptor.Descriptor(
+  name='NewPosts',
+  full_name='NewPosts',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='IsNewPost', full_name='NewPosts.IsNewPost', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='Origin', full_name='NewPosts.Origin', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='Post', full_name='NewPosts.Post', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='Time', full_name='NewPosts.Time', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=313,
+  serialized_end=386,
+)
+
 DESCRIPTOR.message_types_by_name['Auth'] = _AUTH
 DESCRIPTOR.message_types_by_name['ToggleFollow'] = _TOGGLEFOLLOW
 DESCRIPTOR.message_types_by_name['ListUser'] = _LISTUSER
 DESCRIPTOR.message_types_by_name['ReturnList'] = _RETURNLIST
 DESCRIPTOR.message_types_by_name['TimelineRequest'] = _TIMELINEREQUEST
 DESCRIPTOR.message_types_by_name['Post'] = _POST
+DESCRIPTOR.message_types_by_name['NewPosts'] = _NEWPOSTS
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Auth = _reflection.GeneratedProtocolMessageType('Auth', (_message.Message,), dict(
@@ -309,6 +362,13 @@ Post = _reflection.GeneratedProtocolMessageType('Post', (_message.Message,), dic
   ))
 _sym_db.RegisterMessage(Post)
 
+NewPosts = _reflection.GeneratedProtocolMessageType('NewPosts', (_message.Message,), dict(
+  DESCRIPTOR = _NEWPOSTS,
+  __module__ = 'tsns_pb2'
+  # @@protoc_insertion_point(class_scope:NewPosts)
+  ))
+_sym_db.RegisterMessage(NewPosts)
+
 
 
 _TINYSOCIALNETWORKSERVICE = _descriptor.ServiceDescriptor(
@@ -317,8 +377,8 @@ _TINYSOCIALNETWORKSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=314,
-  serialized_end=554,
+  serialized_start=389,
+  serialized_end=673,
   methods=[
   _descriptor.MethodDescriptor(
     name='Login',
@@ -372,6 +432,15 @@ _TINYSOCIALNETWORKSERVICE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_POST,
     output_type=_POST,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='TimelineUpdate',
+    full_name='TinySocialNetworkService.TimelineUpdate',
+    index=6,
+    containing_service=None,
+    input_type=_NEWPOSTS,
+    output_type=_NEWPOSTS,
     serialized_options=None,
   ),
 ])

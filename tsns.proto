@@ -31,6 +31,13 @@ message Post {
   string Time = 3;
 }
 
+message NewPosts {
+  bool IsNewPost = 1;
+  string Origin = 2;
+  string Post = 3;
+  string Time = 4;
+}
+
 service TinySocialNetworkService {
   rpc Login(Auth) returns (Auth) {}
   rpc Follow(ToggleFollow) returns (ToggleFollow) {}
@@ -38,4 +45,5 @@ service TinySocialNetworkService {
   rpc List(ListUser) returns (ReturnList) {}
   rpc Timeline(TimelineRequest) returns (stream Post) {}
   rpc MakePost(Post) returns (Post) {}
+  rpc TimelineUpdate(NewPosts) returns (stream NewPosts) {}
 }

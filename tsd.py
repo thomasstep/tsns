@@ -17,7 +17,8 @@ userTemplate = {
 "followers": [],
 "following": [],
 "posts": [],
-"timeline": []
+"timeline": [],
+"timelineUpdates": []
 }
 
 # Class for the service
@@ -190,8 +191,28 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 		currentUser["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
 		for follower in currentUser["followers"]:
 			self.currentUsers[follower[0]]["timeline"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
+			self.currentUsers[follower[0]]["timelineUpdates"].append((copy.deepcopy(newPost.Origin), copy.deepcopy(postTime), copy.deepcopy(newPost.Post)))
 		self.saveAll()
 		return newPost	
+
+	def TimelineUpdate(self, request, context):
+		newPosts = tsns_pb2.NewPosts()
+		username = request.Origin
+		newPosts.Origin = username
+		updates = self.currentUsers[username]["timelineUpdates"]
+		if not updates:
+			newPosts.Origin = ""
+			newPosts.Post = ""
+			newPosts.Time = ""
+			newPosts.IsNewPost = False
+			yield newPosts
+		else:
+			for update in updates:
+				newPosts.Origin = update[0]
+				newPosts.Time = time.asctime(time.localtime(update[1]))
+				newPosts.Post = update[2]
+				newPosts.IsNewPost = True
+				yield newPosts
 
 # Create the server
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

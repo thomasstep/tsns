@@ -44,6 +44,11 @@ class TinySocialNetworkServiceStub(object):
         request_serializer=tsns__pb2.Post.SerializeToString,
         response_deserializer=tsns__pb2.Post.FromString,
         )
+    self.TimelineUpdate = channel.unary_stream(
+        '/TinySocialNetworkService/TimelineUpdate',
+        request_serializer=tsns__pb2.NewPosts.SerializeToString,
+        response_deserializer=tsns__pb2.NewPosts.FromString,
+        )
 
 
 class TinySocialNetworkServiceServicer(object):
@@ -92,6 +97,13 @@ class TinySocialNetworkServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def TimelineUpdate(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_TinySocialNetworkServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -124,6 +136,11 @@ def add_TinySocialNetworkServiceServicer_to_server(servicer, server):
           servicer.MakePost,
           request_deserializer=tsns__pb2.Post.FromString,
           response_serializer=tsns__pb2.Post.SerializeToString,
+      ),
+      'TimelineUpdate': grpc.unary_stream_rpc_method_handler(
+          servicer.TimelineUpdate,
+          request_deserializer=tsns__pb2.NewPosts.FromString,
+          response_serializer=tsns__pb2.NewPosts.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
