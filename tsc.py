@@ -1,6 +1,7 @@
 import grpc
 import sys
 import subprocess
+import thread
 
 # Import grpc classes
 import tsns_pb2
@@ -19,6 +20,10 @@ def get_command():
     text = raw_input('Cmd>')
     return text
 
+#def sending(username):
+
+#def receiving(username):
+
 def proccess_command(c, u):
     if c == "LIST":
 	listuser = tsns_pb2.ListUser(Origin=u)
@@ -27,6 +32,10 @@ def proccess_command(c, u):
     elif c == "TIMELINE":
 	print("Now you are in the timeline")
         try:
+		#thread_sent = threading.Thread(target=sending, args(u,))
+		#thread_receiving = threading.Thread(target=receiving, args(u,))
+
+		
 		while True:
 			text = raw_input()
 			post = tsns_pb2.Post(Origin=u, Post=text, Time="0")
@@ -34,21 +43,33 @@ def proccess_command(c, u):
 			timelinereq = tsns_pb2.TimelineRequest(Origin=u)
 			for receivedPost in stub.Timeline(timelinereq):
 				print(receivedPost.Origin + " " + receivedPost.Time + " " + receivedPost.Post)
+			
 	except KeyboardInterrupt():
+		#logout
+		#
 		pass
     else:
 	command, user = c.split(" ", 1)
     	if command == "FOLLOW":
         	follow = tsns_pb2.ToggleFollow(Origin=u, Target=user, Following=False)
         	r = stub.Follow(follow)
-		print("Response: " + r.Origin + ", " + r.Target + ", " + str(r.Following))
+		listuser = tsns_pb2.ListUser(Origin=u)
+		reply = stub.List(listuser)
+		if r.Following == False and r.Origin == r.Target:
+			print("Input username already exists, command failed")
+		elif r.Following == False and user in reply.CurrentUsers:
+			print("Command Failed because you cannot follow someone twice")
+		elif r.Following == False:
+			print("Command Failed with invalid username")
+		else:	
+			print("Command completed successfully." + r.Origin + " is now following " + r.Target + ".")
     	elif command == "UNFOLLOW":
 		unfollow = tsns_pb2.ToggleFollow(Origin=u, Target=user, Following=False)
 		r = stub.Unfollow(unfollow)
 		if r.Following == True:
-			print("Cannot unfollow user")
+			print("Command failed with invalid username")
 		else:
-			print("Response: " + r.Origin + ", " + r.Target + ", " + str(r.Following))
+			print("Command completed successfully." + r.Origin + " has unfollowed " + r.Target + ". ")
    	else:
         	print("INVALID COMMAND")
 
@@ -62,8 +83,10 @@ stub = tsns_pb2_grpc.TinySocialNetworkServiceStub(channel)
 login = tsns_pb2.Auth(Username=username, Password="me", LoggedIn=False)
 response = stub.Login(login)
 if response.LoggedIn == False:
-	print("Can't login")
+	print("Can't login because someone else logged in with same username")
 else:
+	#keyboard interrupt and the logout 
+	#just like TIMELINE
 	while(True):
 		#Displaying title
 		display_title()
