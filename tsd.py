@@ -60,6 +60,7 @@ class tsnsServicer(tsns_pb2_grpc.TinySocialNetworkServiceServicer):
 			if username in self.currentUsers:
 				if self.currentUsers[username]["loggedin"]:
 					response.LoggedIn = False
+					return response
 				else:
 					self.currentUsers[username]["loggedin"] = True
 			if username not in self.currentUsers:

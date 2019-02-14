@@ -45,7 +45,10 @@ def proccess_command(c, u):
     	elif command == "UNFOLLOW":
 		unfollow = tsns_pb2.ToggleFollow(Origin=u, Target=user, Following=False)
 		r = stub.Unfollow(unfollow)
-		print("Response: " + r.Origin + ", " + r.Target + ", " + str(r.Following))
+		if r.Following == True:
+			print("Cannot unfollow user")
+		else:
+			print("Response: " + r.Origin + ", " + r.Target + ", " + str(r.Following))
    	else:
         	print("INVALID COMMAND")
 
@@ -57,13 +60,15 @@ username = sys.argv[3]
 stub = tsns_pb2_grpc.TinySocialNetworkServiceStub(channel)
 # Logging in
 login = tsns_pb2.Auth(Username=username, Password="me", LoggedIn=False)
-stub.Login(login)
-
-while(True):
-	#Displaying title
-	display_title()
-	#Getting command input by user
-	command = get_command()
-	r = proccess_command(command, username)
+response = stub.Login(login)
+if response.LoggedIn == False:
+	print("Can't login")
+else:
+	while(True):
+		#Displaying title
+		display_title()
+		#Getting command input by user
+		command = get_command()
+		r = proccess_command(command, username)
 	
 	
